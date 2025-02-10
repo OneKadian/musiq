@@ -1,112 +1,94 @@
+
 "use client";
 
+import { useIsMobile } from "@/hooks/use-mobile";
 import type { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 
+type SongData = {
+  date: string;
+  "Song Name": string;
+  Streams: number;
+};
+
 type PropsType = {
-  data: {
-    sales: { x: string; y: number }[];
-    revenue: { x: string; y: number }[];
-  };
+  data: SongData[];
 };
 
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-export function WeeksProfitChart({ data }: PropsType) {
+export function TopSongsChart({ data }: PropsType) {
+  const isMobile = useIsMobile();
+
   const options: ApexOptions = {
-    colors: ["#5750F1", "#0ABEF9"],
     chart: {
       type: "bar",
-      stacked: true,
+      height: 310,
       toolbar: {
         show: false,
       },
-      zoom: {
-        enabled: false,
-      },
     },
-
-    responsive: [
-      {
-        breakpoint: 1536,
-        options: {
-          plotOptions: {
-            bar: {
-              borderRadius: 3,
-              columnWidth: "25%",
-            },
-          },
-        },
-      },
-    ],
+    colors: ["#5750F1"],
     plotOptions: {
       bar: {
         horizontal: false,
-        borderRadius: 3,
-        columnWidth: "25%",
-        borderRadiusApplication: "end",
-        borderRadiusWhenStacked: "last",
+        columnWidth: "55%",
       },
     },
     dataLabels: {
       enabled: false,
     },
-
     grid: {
       strokeDashArray: 5,
-      xaxis: {
-        lines: {
-          show: false,
-        },
-      },
       yaxis: {
         lines: {
           show: true,
         },
       },
     },
-
+    stroke: {
+      width: isMobile ? 2 : 3,
+    },
     xaxis: {
-      axisBorder: {
-        show: false,
-      },
-      axisTicks: {
-        show: false,
-      },
+      categories: data.map(item => item.date),
     },
-    legend: {
-      position: "top",
-      horizontalAlign: "left",
-      fontFamily: "inherit",
-      fontWeight: 500,
-      fontSize: "14px",
-      markers: {
-        size: 9,
-        shape: "circle",
+    yaxis: {
+      labels: {
+        formatter: (value) => {
+          if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
+          if (value >= 1000) return `${(value / 1000).toFixed(0)}K`;
+          return value.toString();
+        },
       },
     },
-    fill: {
-      opacity: 1,
-    },
+    tooltip: {
+      y: {
+        formatter: (value) => `${value.toLocaleString()} streams`,
+      },
+      custom: function({ series, seriesIndex, dataPointIndex }) {
+        const songInfo = data[dataPointIndex]["Song Name"];
+        return `<div class="p-2">
+          <div>${songInfo}</div>
+          <div>${series[seriesIndex][dataPointIndex].toLocaleString()} streams</div>
+        </div>`;
+      }
+    }
   };
+
+  const series = [{
+    name: "Streams",
+    data: data.map(item => item.Streams),
+  }];
+
   return (
-    <div className="-ml-3.5 mt-3">
+    <div className="-ml-4 -mr-5 h-[310px]">
       <Chart
         options={options}
-        series={[
-          {
-            name: "Sales",
-            data: data.sales,
-          },
-          {
-            name: "Revenue",
-            data: data.revenue,
-          },
-        ]}
+        series={series}
         type="bar"
-        height={370}
+        height={310}
       />
     </div>
   );

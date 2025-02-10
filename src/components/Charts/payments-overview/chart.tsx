@@ -1,26 +1,32 @@
+
+
 "use client";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 
+type UserData = {
+  date: string;
+  "Total Users": number;
+  "Active Users": number;
+};
+
 type PropsType = {
-  data: {
-    received: { x: unknown; y: number }[];
-    due: { x: unknown; y: number }[];
-  };
+  data: UserData[];
 };
 
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-export function PaymentsOverviewChart({ data }: PropsType) {
+export function UserGrowthChart({ data }: PropsType) {
   const isMobile = useIsMobile();
 
   const options: ApexOptions = {
     legend: {
-      show: false,
+      show: true,
+      position: 'top',
     },
     colors: ["#5750F1", "#0ABEF9"],
     chart: {
@@ -75,7 +81,18 @@ export function PaymentsOverviewChart({ data }: PropsType) {
         show: true,
       },
     },
+    yaxis: {
+      min: 0,
+      labels: {
+        formatter: (value) => {
+          if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
+          if (value >= 1000) return `${(value / 1000).toFixed(0)}K`;
+          return value.toString();
+        },
+      },
+    },
     xaxis: {
+      categories: data.map(item => item.date),
       axisBorder: {
         show: false,
       },
@@ -85,20 +102,22 @@ export function PaymentsOverviewChart({ data }: PropsType) {
     },
   };
 
+  const series = [
+    {
+      name: "Total Users",
+      data: data.map(item => item["Total Users"]),
+    },
+    {
+      name: "Active Users",
+      data: data.map(item => item["Active Users"]),
+    },
+  ];
+
   return (
     <div className="-ml-4 -mr-5 h-[310px]">
       <Chart
         options={options}
-        series={[
-          {
-            name: "Received",
-            data: data.received,
-          },
-          {
-            name: "Due",
-            data: data.due,
-          },
-        ]}
+        series={series}
         type="area"
         height={310}
       />

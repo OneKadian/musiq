@@ -1,3 +1,4 @@
+
 "use client";
 
 import { compactFormat } from "@/lib/format-number";
@@ -5,7 +6,12 @@ import type { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 
 type PropsType = {
-  data: { name: string; amount: number }[];
+  data: {
+    name: string;
+    amount: number;
+    share: string;
+    color: string;
+  }[];
 };
 
 const Chart = dynamic(() => import("react-apexcharts"), {
@@ -13,13 +19,15 @@ const Chart = dynamic(() => import("react-apexcharts"), {
 });
 
 export function DonutChart({ data }: PropsType) {
+  const totalRevenue = data.reduce((acc, item) => acc + item.amount, 0);
+
   const chartOptions: ApexOptions = {
     chart: {
       type: "donut",
       fontFamily: "inherit",
     },
-    colors: ["#5750F1", "#5475E5", "#8099EC", "#ADBCF2"],
-    labels: data.map((item) => item.name),
+    colors: data.map(item => item.color),
+    labels: data.map(item => item.name),
     legend: {
       show: true,
       position: "bottom",
@@ -28,8 +36,7 @@ export function DonutChart({ data }: PropsType) {
         vertical: 5,
       },
       formatter: (legendName, opts) => {
-        const { seriesPercent } = opts.w.globals;
-        return `${legendName}: ${seriesPercent[opts.seriesIndex]}%`;
+        return `${legendName}: ${data[opts.seriesIndex].share}`;
       },
     },
     plotOptions: {
@@ -42,15 +49,16 @@ export function DonutChart({ data }: PropsType) {
             total: {
               show: true,
               showAlways: true,
-              label: "Visitors",
+              label: "Total Revenue",
               fontSize: "16px",
               fontWeight: "400",
+              color: "#64748b",
             },
             value: {
               show: true,
               fontSize: "28px",
               fontWeight: "bold",
-              formatter: (val) => compactFormat(+val),
+              formatter: () => `$${compactFormat(totalRevenue)}`,
             },
           },
         },
@@ -85,12 +93,17 @@ export function DonutChart({ data }: PropsType) {
         },
       },
     ],
+    tooltip: {
+      y: {
+        formatter: (value) => `$${value.toLocaleString()}`
+      }
+    }
   };
 
   return (
     <Chart
       options={chartOptions}
-      series={data.map((item) => item.amount)}
+      series={data.map(item => item.amount)}
       type="donut"
     />
   );
