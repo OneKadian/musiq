@@ -1,5 +1,3 @@
-
-
 import { cn } from "@/lib/utils";
 import { DonutChart } from "./chart";
 
@@ -7,7 +5,7 @@ type PropsType = {
   className?: string;
 };
 
-export function RevenueDistribution({ className }: PropsType) {
+export function UsedDevices({ className }: PropsType) {
   const data = [
     {
       name: "Subscriptions",

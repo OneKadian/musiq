@@ -1,5 +1,5 @@
 import { UserGrowthOverview } from "@/components/Charts/payments-overview";
-import { RevenueDistribution } from "@/components/Charts/used-devices";
+import { UsedDevices } from "@/components/Charts/used-devices";
 import { TopSongsOverview } from "@/components/Charts/weeks-profit";
 import { TopChannels } from "@/components/Tables/top-channels";
 import { TopChannelsSkeleton } from "@/components/Tables/top-channels/skeleton";
@@ -39,7 +39,7 @@ export default async function Home({ searchParams }: PropsType) {
           className="col-span-12 xl:col-span-5"
         />
 
-        <RevenueDistribution
+        <UsedDevices
           className="col-span-12 xl:col-span-5"
           key={extractTimeFrame("used_devices")}
           // timeFrame={extractTimeFrame("used_devices")?.split(":")[1]}

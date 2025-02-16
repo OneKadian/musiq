@@ -25,7 +25,7 @@ export default async function Page(props: PropsType) {
       <div className="grid grid-cols-12 gap-4 md:gap-6 2xl:gap-7.5">
         <UsedDevices
           key={extractTimeFrame("used_devices")}
-          timeFrame={extractTimeFrame("used_devices")?.split(":")[1]}
+          // timeFrame={extractTimeFrame("used_devices")?.split(":")[1]}
           className="col-span-12 xl:col-span-5"
         />
 
