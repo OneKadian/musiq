@@ -1,3 +1,4 @@
+
 'use client'
 import { useState } from "react";
 import {
@@ -18,6 +19,8 @@ interface MusicData {
   userId: string;
 }
 
+type SortOrder = 'asc' | 'desc' | null;
+
 const ARTISTS = [
   "Eminem",
   "The Weeknd",
@@ -32,6 +35,8 @@ export function TopChannels({ className }: { className?: string }) {
     ARTISTS.reduce((acc, artist) => ({ ...acc, [artist]: false }), {})
   );
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const [sortOrder, setSortOrder] = useState<SortOrder>(null);
 
   // Replace this with your actual data fetching
   const data: MusicData[] = [
@@ -76,7 +81,6 @@ export function TopChannels({ className }: { className?: string }) {
 
   ];
 
-
   const filteredData = data.filter(item => {
     const matchesSearch = searchTerm === "" || 
       item.songName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -89,11 +93,26 @@ export function TopChannels({ className }: { className?: string }) {
     return matchesSearch && matchesArtistFilter;
   });
 
+  // Sort the filtered data based on stream count
+  const sortedData = [...filteredData].sort((a, b) => {
+    if (sortOrder === 'asc') {
+      return a.streamCount - b.streamCount;
+    } else if (sortOrder === 'desc') {
+      return b.streamCount - a.streamCount;
+    }
+    return 0;
+  });
+
   const handleArtistFilterChange = (artist: string) => {
     setSelectedArtists(prev => ({
       ...prev,
       [artist]: !prev[artist]
     }));
+  };
+
+  const handleSortChange = (order: SortOrder) => {
+    setSortOrder(order);
+    setIsSortOpen(false);
   };
 
   return (
@@ -130,6 +149,7 @@ export function TopChannels({ className }: { className?: string }) {
         </div>
         <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
           <div className="flex items-center space-x-3 w-full md:w-auto">
+            {/* Filter Button */}
             <div className="relative">
               <button
                 onClick={() => setIsFilterOpen(!isFilterOpen)}
@@ -164,6 +184,53 @@ export function TopChannels({ className }: { className?: string }) {
                 </div>
               )}
             </div>
+
+            {/* Sort Button */}
+            <div className="relative">
+              <button
+                onClick={() => setIsSortOpen(!isSortOpen)}
+                className="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                type="button"
+              >
+                <svg className="w-4 h-4 mr-2 text-gray-400" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h7a1 1 0 100-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3z" />
+                </svg>
+                Sort by Streams
+                {sortOrder && <span className="ml-1 text-xs">({sortOrder === 'asc' ? '↑' : '↓'})</span>}
+              </button>
+              
+              {isSortOpen && (
+                <div className="absolute right-0 mt-2 w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700 z-50">
+                  <h6 className="mb-3 text-sm font-medium text-gray-900 dark:text-white">Sort Order</h6>
+                  <ul className="space-y-2 text-sm">
+                    <li className="flex items-center">
+                      <input
+                        id="sort-asc"
+                        type="radio"
+                        checked={sortOrder === 'asc'}
+                        onChange={() => handleSortChange(sortOrder === 'asc' ? null : 'asc')}
+                        className="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                      />
+                      <label htmlFor="sort-asc" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                        Ascending
+                      </label>
+                    </li>
+                    <li className="flex items-center">
+                      <input
+                        id="sort-desc"
+                        type="radio"
+                        checked={sortOrder === 'desc'}
+                        onChange={() => handleSortChange(sortOrder === 'desc' ? null : 'desc')}
+                        className="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                      />
+                      <label htmlFor="sort-desc" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                        Descending
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -181,7 +248,7 @@ export function TopChannels({ className }: { className?: string }) {
             </TableHeader>
 
             <TableBody>
-              {filteredData.map((item, i) => (
+              {sortedData.map((item, i) => (
                 <TableRow
                   className="text-center text-base font-medium text-dark dark:text-white"
                   key={item.userId + i}
