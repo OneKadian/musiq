@@ -6,7 +6,7 @@ type PropsType = {
   label: string;
   data: {
     value: number | string;
-    growthRate: number;
+    growthRate: number ;
   };
   Icon: (props: SVGProps<SVGSVGElement>) => JSX.Element;
 };
