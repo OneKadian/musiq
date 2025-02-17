@@ -16,9 +16,9 @@ export function UserInfo() {
   const [isOpen, setIsOpen] = useState(false);
 
   const USER = {
-    name: "John Smith",
-    email: "johnson@nextadmin.com",
-    img: "/images/user/user-03.png",
+    name: "Anirudh Kadian",
+    email: "manageanirudh@gmail.com",
+    img: "https://media.licdn.com/dms/image/v2/D4D03AQFnqeB1BC83yA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1725638539410?e=1745452800&v=beta&t=OSszQWS5ZLzxBfu4yvi51MEoZLfe0D3oLvoVkxlSANw",
   };
 
   return (
@@ -29,7 +29,7 @@ export function UserInfo() {
         <figure className="flex items-center gap-3">
           <Image
             src={USER.img}
-            className="size-12"
+            className="size-12 rounded-full"
             alt={`Avatar of ${USER.name}`}
             role="presentation"
             width={200}
@@ -71,7 +71,7 @@ export function UserInfo() {
               {USER.name}
             </div>
 
-            <div className="leading-none text-gray-6">{USER.email}</div>
+            <div className="leading-none text-sm text-gray-6">{USER.email}</div>
           </figcaption>
         </figure>
 
@@ -79,16 +79,16 @@ export function UserInfo() {
 
         <div className="p-2 text-base text-[#4B5563] dark:text-dark-6 [&>*]:cursor-pointer">
           <Link
-            href={"/profile"}
+            href={"https://github.com/OneKadian"}
             onClick={() => setIsOpen(false)}
             className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-[9px] hover:bg-gray-2 hover:text-dark dark:hover:bg-dark-3 dark:hover:text-white"
           >
             <UserIcon />
 
-            <span className="mr-auto text-base font-medium">View profile</span>
+            <span className="mr-auto text-base font-medium">View Github</span>
           </Link>
 
-          <Link
+          {/* <Link
             href={"/pages/settings"}
             onClick={() => setIsOpen(false)}
             className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-[9px] hover:bg-gray-2 hover:text-dark dark:hover:bg-dark-3 dark:hover:text-white"
@@ -98,12 +98,12 @@ export function UserInfo() {
             <span className="mr-auto text-base font-medium">
               Account Settings
             </span>
-          </Link>
+          </Link> */}
         </div>
 
         <hr className="border-[#E8E8E8] dark:border-dark-3" />
-
-        <div className="p-2 text-base text-[#4B5563] dark:text-dark-6">
+{/* Logout button */}
+        {/* <div className="p-2 text-base text-[#4B5563] dark:text-dark-6">
           <button
             className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-[9px] hover:bg-gray-2 hover:text-dark dark:hover:bg-dark-3 dark:hover:text-white"
             onClick={() => setIsOpen(false)}
@@ -112,7 +112,7 @@ export function UserInfo() {
 
             <span className="text-base font-medium">Log out</span>
           </button>
-        </div>
+        </div> */}
       </DropdownContent>
     </Dropdown>
   );
