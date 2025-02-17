@@ -142,29 +142,47 @@ export function Sidebar() {
                             )}
                           </div>
                         ) : (
+                          // (() => {
+                          //   const href =
+                          //     "url" in item
+                          //       ? item.url + ""
+                          //       : "/" +
+                          //         item.title.toLowerCase().split(" ").join("-");
+
+                          //   return (
+                          //     <MenuItem
+                          //       className="flex items-center gap-3 py-3"
+                          //       as="link"
+                          //       href={href}
+                          //       isActive={pathname === href}
+                          //     >
+                          //       <item.icon
+                          //         className="size-6 shrink-0"
+                          //         aria-hidden="true"
+                          //       />
+
+                          //       <span>{item.title}</span>
+                          //     </MenuItem>
+                          //   );
+                          // })()
                           (() => {
-                            const href =
-                              "url" in item
-                                ? item.url + ""
-                                : "/" +
-                                  item.title.toLowerCase().split(" ").join("-");
+  const href = item.url ?? ('/' + item.title.toLowerCase().split(" ").join("-"));
 
-                            return (
-                              <MenuItem
-                                className="flex items-center gap-3 py-3"
-                                as="link"
-                                href={href}
-                                isActive={pathname === href}
-                              >
-                                <item.icon
-                                  className="size-6 shrink-0"
-                                  aria-hidden="true"
-                                />
-
-                                <span>{item.title}</span>
-                              </MenuItem>
-                            );
-                          })()
+  return (
+    <MenuItem
+      className="flex items-center gap-3 py-3"
+      as="link"
+      href={href}
+      isActive={pathname === href}
+    >
+      <item.icon
+        className="size-6 shrink-0"
+        aria-hidden="true"
+      />
+      <span>{item.title}</span>
+    </MenuItem>
+  );
+})()
                         )}
                       </li>
                     ))}
