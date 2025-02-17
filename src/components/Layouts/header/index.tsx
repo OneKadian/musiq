@@ -22,17 +22,18 @@ export function Header() {
         <span className="sr-only">Toggle Sidebar</span>
       </button>
 
-      {isMobile && (
+      {/* {isMobile && (
         <Link href={"/"} className="ml-2 max-[430px]:hidden min-[375px]:ml-4">
           <Image
-            src={"/images/logo/logo-icon.svg"}
+            // src={"/images/logo/logo-icon.svg"}
+            src="https://osdblyvwidixouibqkrf.supabase.co/storage/v1/object/public/Badminton//OPPORTUNITIES-removebg-preview.png"
             width={32}
             height={32}
             alt=""
             role="presentation"
           />
         </Link>
-      )}
+      )} */}
 
       <div className="max-xl:hidden">
         <h1 className="mb-0.5 text-heading-5 font-bold text-dark dark:text-white">
