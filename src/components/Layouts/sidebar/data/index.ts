@@ -23,11 +23,11 @@ export const NAV_DATA = [
           },
           {
             title: "Video showcase",
-            url: "",
+            url: "https://www.tella.tv/video/speedy-labs-1l0h",
           },
           {
             title: "Speedy Content",
-            url: "",
+            url: "https://maple-cheese-7fb.notion.site/Frontend-Engineer-Speedy-Labs-19f6e8906fa580ed84e5f0dd64d00f65?pvs=4",
           },
         ],
       },
