@@ -1,6 +1,6 @@
 # Streamify: Analytics Dashboard
 
-[![Streamify Dashboard](https://osdblyvwidixouibqkrf.supabase.co/storage/v1/object/public/Badminton//Black%20and%20Dark%20Space%20Photo%20YouTube%20Thumbnail.png){width="100%"}](https://anirudhkadian.com)
+[![Streamify Dashboard](https://osdblyvwidixouibqkrf.supabase.co/storage/v1/object/public/Badminton//Black%20and%20Dark%20Space%20Photo%20YouTube%20Thumbnail.png)](https://anirudhkadian.com)
 
 Built with Next.js and Tailwind CSS, here is a music analysis dashboard with the following sections:
 
